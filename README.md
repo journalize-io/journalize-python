@@ -26,3 +26,25 @@ client.record(
     tags={"Account": "Revenue", "Order": "1123"}
 )
 ```
+
+## Manual Build
+
+1. Increment version, update changelog
+
+2. Perform build
+
+```sh
+python3 -m build
+```
+
+3. Uplaod to test pypi. Username `__token__` password is API Key. 
+   
+```
+python3 -m twine upload --repository testpypi dist/*
+```
+
+4. Uplaod to pypi. Username `__token__` password is API Key. 
+   
+```
+python3 -m twine upload dist/*
+```
