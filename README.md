@@ -29,7 +29,7 @@ client.record(
 
 ## Manual Build
 
-1. Increment version, update changelog
+1. Increment version in setup.py, client.py, update changelog
 
 2. Perform build
 
