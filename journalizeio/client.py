@@ -4,7 +4,7 @@ import inspect
 
 class JournalizeClient(object):
     BASE_URL = "https://api.journalize.io"
-    USER_AGENT = "journalize.io python 0.0.2"
+    USER_AGENT = "journalize.io python 0.0.3"
 
     def _frame_details(self):
         try:
