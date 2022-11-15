@@ -1,10 +1,11 @@
-import requests
 import inspect
+
+import requests
 
 
 class JournalizeClient(object):
     BASE_URL = "https://api.journalize.io"
-    USER_AGENT = "journalize.io python 0.0.3"
+    USER_AGENT = "journalize.io python 0.0.4"
 
     def _frame_details(self):
         try:
@@ -28,14 +29,12 @@ class JournalizeClient(object):
         if base_url is not None:
             self.BASE_URL = base_url
 
-    def ping(self):
-        headers = {"User-Agent": self.USER_AGENT}
-        rc = requests.get(
-            self.BASE_URL + "/ping", auth=(self.api_key, ""), headers=headers
-        )
+    def me(self):
+        headers = {"User-Agent": self.USER_AGENT, "X-API-KEY": self.api_key}
+        rc = requests.get(self.BASE_URL + "/me", headers=headers)
         return rc.json()
 
-    def record(self, amount: float, date=None, tags=None):
+    def record_event(self, amount: float, date=None, tags=None):
         if tags is None:
             tags = {}
 
@@ -43,12 +42,40 @@ class JournalizeClient(object):
         if frame_details is not None:
             tags["_journalize_code"] = frame_details
 
-        headers = {"User-Agent": self.USER_AGENT}
+        headers = {"User-Agent": self.USER_AGENT, "X-API-KEY": self.api_key}
         payload = {"amount": amount, "date": date, "tags": tags}
         rc = requests.post(
-            self.BASE_URL + "/record",
+            self.BASE_URL + "/events/record",
             json=payload,
-            auth=(self.api_key, ""),
+            headers=headers,
+        )
+        return rc.json()
+
+    def create_account(self, account_id, name, normal):
+        headers = {"User-Agent": self.USER_AGENT, "X-API-KEY": self.api_key}
+        payload = {"id": account_id, "name": name, "normal": normal}
+
+        rc = requests.post(
+            self.BASE_URL + "/ledger/accounts",
+            json=payload,
+            headers=headers,
+        )
+        return rc.json()
+
+    def create_transaction(self, entries, date=None, tags=None):
+        if tags is None:
+            tags = {}
+
+        frame_details = self._frame_details()
+        if frame_details is not None:
+            tags["_journalize_code"] = frame_details
+
+        headers = {"User-Agent": self.USER_AGENT, "X-API-KEY": self.api_key}
+        payload = {"date": date, "entries": entries, "tags": [tags]}
+
+        rc = requests.post(
+            self.BASE_URL + "/ledger/transaction",
+            json=payload,
             headers=headers,
         )
         return rc.json()

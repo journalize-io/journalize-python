@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="journalizeio",
-    version="0.0.3",
+    version="0.0.4",
     author="Journalize.io",
     author_email="support@journalize.io",
     description="Client library for journalize.io",
