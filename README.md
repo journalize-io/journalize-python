@@ -18,10 +18,10 @@ from journalizeio import JournalizeClient
 client = JournalizeClient("your_api_key")
 
 # Test connectivity and API key
-client.ping()
+client.me()
 
-# Record financial transaction
-client.record(
+# Record financial event
+client.record_event(
     amount=15.00,
     tags={"Account": "Revenue", "Order": "1123"}
 )
